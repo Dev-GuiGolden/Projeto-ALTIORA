@@ -1,0 +1,242 @@
+/* =========================================================================
+   ALTIORA — COMPONENTES.CSS
+   Peças reutilizáveis que aparecem em mais de uma seção:
+   botões, cabeçalho, seletor de idioma, menu e blocos de imagem.
+   ========================================================================= */
+
+/* -------------------------------------------------------------------------
+   1. BOTÕES
+   ------------------------------------------------------------------------- */
+.botao {
+  display: inline-block;
+  padding: 0.95rem 2.2rem;
+  font-size: 0.78rem;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  border: 1px solid currentColor;
+  transition: background-color var(--transicao), color var(--transicao);
+}
+
+/* Versão para fundo escuro */
+.botao--claro { color: var(--branco); }
+.botao--claro:hover,
+.botao--claro:focus-visible {
+  background-color: var(--branco);
+  color: var(--preto);
+}
+
+/* Versão para fundo claro */
+.botao--escuro { color: var(--preto); }
+.botao--escuro:hover,
+.botao--escuro:focus-visible {
+  background-color: var(--preto);
+  color: var(--branco);
+}
+
+/* -------------------------------------------------------------------------
+   2. CABEÇALHO FIXO
+   Começa transparente sobre o hero e ganha fundo sólido ao rolar.
+   ------------------------------------------------------------------------- */
+.cabecalho {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 100;
+  padding: 1.6rem 0;
+  color: var(--branco);
+  transition: background-color var(--transicao), padding var(--transicao);
+}
+
+.cabecalho--rolado {
+  background-color: rgba(10, 10, 10, 0.92);
+  backdrop-filter: blur(8px);
+  padding: 1rem 0;
+}
+
+.cabecalho__interior {
+  max-width: var(--largura-maxima);
+  margin: 0 auto;
+  padding: 0 var(--margem-lateral);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.cabecalho__marca {
+  font-family: var(--fonte-titulo);
+  font-size: 1.45rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+}
+
+.cabecalho__navegacao {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-left: auto;
+}
+
+.cabecalho__link {
+  position: relative;
+  padding-bottom: 0.3rem;
+  font-size: 0.76rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Traço que cresce no hover, ecoando a linha de rota do topo */
+.cabecalho__link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 1px;
+  background-color: currentColor;
+  transition: width var(--transicao);
+}
+.cabecalho__link:hover::after { width: 100%; }
+
+.cabecalho__link--destaque {
+  border: 1px solid currentColor;
+  padding: 0.5rem 1.05rem;
+  transition: background-color var(--transicao), color var(--transicao);
+}
+.cabecalho__link--destaque::after { display: none; }
+.cabecalho__link--destaque:hover {
+  background-color: var(--branco);
+  color: var(--preto);
+}
+
+.cabecalho__acoes {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+/* -------------------------------------------------------------------------
+   3. SELETOR DE IDIOMA (PT / EN)
+   O idioma ativo fica opaco; o inativo, apagado.
+   ------------------------------------------------------------------------- */
+.seletor-idioma {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.seletor-idioma__opcao {
+  font-size: 0.74rem;
+  letter-spacing: 0.12em;
+  color: var(--cinza-medio);
+  padding: 0.2rem 0.1rem;
+  transition: color var(--transicao);
+}
+.seletor-idioma__opcao:hover { color: var(--branco); }
+
+/* Estado marcado pelo JS por meio do atributo aria-pressed */
+.seletor-idioma__opcao[aria-pressed="true"] {
+  color: var(--branco);
+  border-bottom: 1px solid currentColor;
+}
+
+.seletor-idioma__divisor {
+  width: 1px;
+  height: 11px;
+  background-color: rgba(255, 255, 255, 0.28);
+}
+
+/* -------------------------------------------------------------------------
+   4. BOTÃO DE MENU (apenas telas pequenas — ver responsivo.css)
+   ------------------------------------------------------------------------- */
+.gatilho-menu {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 30px;
+  height: 30px;
+}
+.gatilho-menu span {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background-color: currentColor;
+  transition: transform var(--transicao), opacity var(--transicao);
+}
+
+/* -------------------------------------------------------------------------
+   5. FIGURAS (blocos de imagem)
+
+   Cada figura tem um fundo próprio com um rótulo discreto no centro.
+   Se o arquivo de imagem ainda não existir na pasta /imagens, o JS marca
+   a figura com a classe "sem-imagem": a imagem quebrada some e o
+   espaço reservado continua compondo o layout.
+   ------------------------------------------------------------------------- */
+.figura {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--preto-camada);
+}
+
+/* Textura de linhas diagonais do espaço reservado */
+.figura::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(255, 255, 255, 0.05) 0 1px,
+    transparent 1px 14px
+  );
+}
+
+/* Rótulo do espaço reservado, alimentado pelo atributo data-rotulo */
+.figura::after {
+  content: attr(data-rotulo);
+  position: absolute;
+  inset: auto 1.4rem 1.2rem 1.4rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cinza-medio);
+}
+
+.figura__imagem {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Todas as fotos entram em preto e branco para respeitar a paleta */
+  filter: grayscale(1) contrast(1.04);
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Aproximação suave quando o visitante passa o cursor pela figura */
+.figura:hover .figura__imagem { transform: scale(1.03); }
+
+/* Estado sem imagem disponível (classe aplicada por js/interacoes.js) */
+.sem-imagem .figura__imagem { display: none; }
+
+/* Proporções */
+.figura--alta    { aspect-ratio: 3 / 4; }
+.figura--larga   { aspect-ratio: 4 / 3; }
+.figura--retrato { aspect-ratio: 1 / 1; }
+
+/* Faixa de imagem de borda a borda */
+.faixa {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 21 / 9;
+  background-color: var(--preto-camada);
+}
+.faixa::after {
+  content: attr(data-rotulo);
+  position: absolute;
+  inset: auto 0 1.4rem 0;
+  text-align: center;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cinza-medio);
+}
